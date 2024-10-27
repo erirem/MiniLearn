@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sıfırdan margin ve padding düzeni */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  background-color: #f9fafb; /* Hafif bir arka plan rengi */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Kod blokları için optimize edilmiş stil */
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+  background-color: #e5e7eb; /* Kod bloğuna arka plan ekler */
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Tüm elementlere kutu modeli uygulanması */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Linklerin daha doğal görünmesi */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}

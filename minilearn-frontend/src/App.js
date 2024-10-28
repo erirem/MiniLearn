@@ -1,59 +1,55 @@
 // src/App.js
-import { useState } from 'react';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './ProtectedRoute';
 import { auth } from './firebaseConfig';
 
 function App() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [backendMessage, setBackendMessage] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert('Logged in successfully!');
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert('User registered successfully!');
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
+  // 1. Firebase Authentication Listener
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+      setLoading(false); // Loading complete
+    });
+
+    // Cleanup the listener on component unmount
+    return () => unsubscribe();
+  }, []);
+
+  // 2. Fetch Backend Data
+  useEffect(() => {
+    fetch('http://localhost:5000/api/test') // Request to backend
+      .then((response) => response.json())
+      .then((data) => setBackendMessage(data.message)) // Save backend response
+      .catch((error) => console.error('Backend connection error:', error));
+  }, []);
+
+  if (loading) return <p>Loading...</p>; // Show loading while waiting
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="p-5 shadow-md">
-        <h1 className="text-xl mb-4">{isLogin ? 'Login' : 'Register'}</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="block p-2 m-2 border"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="block p-2 m-2 border"
-          />
-          <button type="submit" className="px-4 py-2 bg-blue-500 text-white">
-            {isLogin ? 'Login' : 'Register'}
-          </button>
-        </form>
-        <button
-          onClick={() => setIsLogin(!isLogin)}
-          className="mt-2 text-blue-500 underline"
-        >
-          {isLogin ? 'Create an account' : 'Already have an account? Login'}
-        </button>
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard backendMessage={backendMessage} />
+            </ProtectedRoute>
+          }
+        />
+        {/* Redirect root URL to login page */}
+        <Route path="/" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
 }
 

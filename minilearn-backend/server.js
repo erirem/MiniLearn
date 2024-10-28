@@ -1,14 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+const cors = require('cors'); // Import CORS
 
 const app = express();
-app.use(cors());
+app.use(cors()); // Enable CORS to allow frontend access
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('MiniLearn Backend is running');
+app.get('/api/test', (req, res) => {
+  res.json({ message: 'Backend bağlantısı başarılı!' });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

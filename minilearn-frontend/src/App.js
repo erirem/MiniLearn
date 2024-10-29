@@ -6,6 +6,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 import { auth } from './firebaseConfig';
+import ModuleList from './pages/ModuleList';
+import Quiz from './pages/Quiz';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,7 @@ function App() {
 
   // 2. Fetch Backend Data
   useEffect(() => {
-    fetch('http://localhost:5000/api/test') // Request to backend
+    fetch('http://localhost:3000/api/test') // Request to backend
       .then((response) => response.json())
       .then((data) => setBackendMessage(data.message)) // Save backend response
       .catch((error) => console.error('Backend connection error:', error));
@@ -38,6 +40,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/modules" element={<ModuleList />} />
+        <Route path="/quiz" element={<Quiz />} />
         <Route
           path="/dashboard"
           element={

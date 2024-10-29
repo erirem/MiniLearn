@@ -63,9 +63,27 @@ function Dashboard({ backendMessage }) {
         </ul>
       </div>
 
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold">Modüller ve Quizler</h3>
+        <div className="flex space-x-4">
+          <button
+            onClick={() => navigate('/modules')}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
+          >
+            Eğitim Modülleri
+          </button>
+          <button
+            onClick={() => navigate('/quiz')}
+            className="px-4 py-2 bg-green-500 text-white rounded"
+          >
+            Quizler
+          </button>
+        </div>
+      </div>
+
       <button
         onClick={handleLogout}
-        className="px-4 py-2 bg-red-500 text-white rounded"
+        className="px-4 py-2 bg-red-500 text-white rounded mt-6"
       >
         Çıkış Yap
       </button>

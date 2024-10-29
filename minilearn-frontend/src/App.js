@@ -25,14 +25,6 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  // 2. Fetch Backend Data
-  useEffect(() => {
-    fetch('http://localhost:3000/api/test') // Request to backend
-      .then((response) => response.json())
-      .then((data) => setBackendMessage(data.message)) // Save backend response
-      .catch((error) => console.error('Backend connection error:', error));
-  }, []);
-
   if (loading) return <p>Loading...</p>; // Show loading while waiting
 
   return (

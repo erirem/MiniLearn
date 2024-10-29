@@ -1,37 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function ModuleList(){
-    const [modules, setModules] = useState([]);
-    const[loading, setLoading] = useState(true);
+const ModulesList = () => {
+  const [content, setContent] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchModules = async() => {
-            try{
-                const res = await fetch('http://localhost:3000/api/modules')
-                const data = await res.json();
-                setModules(data.modules);
-            } catch(error){
-                console.error('Modüller yüklenirken hata:', error);
-            } finally{
-                setLoading(false);
-            }
-        };
-       fetchModules();
-        }, []);
-        if(loading) return <p>Loading...</p>
-
-        return(
-            <div className= "p-8">
-                      <h1 className="text-3xl font-bold mb-6">Education Modules</h1>
-                      <ul>
-                        {modules.map((module) => (
-                            <li key={module.id} className="mb-4 p-4 border rounded">
-                                <h2 className="text-xl font-semibold">{module.title}</h2>
-            <p>{module.description}</p>
-          </li>
-                        ))}
-                      </ul>
-            </div>
-            );
+  // Modül üretme fonksiyonu
+  const generateModule = async (moduleType) => {
+    setLoading(true);
+    try {
+      const response = await axios.post('http://localhost:5000/api/modules', {
+        moduleType, // Modül tipini gönderiyoruz
+      });
+      console.log('Generated Content:', response.data.content);
+      setContent(response.data.content);
+    } catch (err) {
+      console.error('Error generating module:', err);
+      setError('Failed to generate module.');
+    } finally {
+      setLoading(false);
     }
-    export default ModuleList;
+  };
+
+  return (
+    <div>
+      <h2>Select a Module</h2>
+      <button onClick={() => generateModule('ai')}>Artificial Intelligence</button>
+      <button onClick={() => generateModule('math')}>Mathematics</button>
+      <button onClick={() => generateModule('history')}>History</button>
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {content && (
+        <div>
+          <h3>Generated Content:</h3>
+          <p>{content}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ModulesList;

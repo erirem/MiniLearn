@@ -1,47 +1,17 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
 
-const schema = {
-  "type": "array",
-  "items": { // "modules" yerine "items" kullanıyoruz
-    "type": "object",
-    "properties": {
-      "title": {"type": "string"},
-      "content": {"type": "string"}
-    },
-    "required": ["title", "content"] 
-  }
-};
-
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-pro",
-  generationConfig: {
-    responseMimeType: "application/json",
-    responseSchema: schema,
-  },
-});
+  model: "gemini-1.5-flash"});
 
 // Farklı modüller için prompt'lar
 const prompts = {
-  ai: `Yapay zeka hakkında detaylı bir modül oluştur. Bu modülü, kullanıcıların önyüzde kısa kısa okuyarak öğrenebileceği şekilde küçük bölümlere ayır. Her bölümde bir konu başlığı ve en fazla 100 kelimelik bir açıklama olmalı. Aşağıdaki konuları kapsamalı:
+  ai: `Yapay zeka öğrenmeye yeni başlamış biri için detaylı bir eğitim modül oluştur. Bu modülü, kısa sayfalara ayır kart yapmak için. Kart başlığından itibaren kar içeriğinin sonuna "<>" içine yaz`, 
 
-Yapay zekanın tanımı
-Yapay zeka türleri (örneğin, makine öğrenmesi, derin öğrenme, doğal dil işleme, bilgisayar görüşü)
-Yapay zeka uygulamaları (örneğin, sağlık, otomotiv, finans, eğitim)
-Yapay zekanın etik hususları (örneğin, işsizlik, önyargı, gizlilik, güvenlik, sorumluluk)`, 
+  math: `Matematiği öğrenmeye yeni başlamış biri için detaylı bir eğitim modül oluştur. Bu modülü, kısa sayfalara ayır kart yapmak için.`,
 
-  math: `Write a detailed module about calculus, including:
-  * A definition of calculus
-  * Differentiation and Integration concepts
-  * Applications of calculus in real life
-  * A short quiz with 5 questions`,
-
-  history: `Write a detailed module about the history of ancient Egypt, including:
-  * Key events in Egyptian history
-  * Famous pharaohs
-  * Importance of the pyramids
-  * A quiz with 5 multiple-choice questions`
+  history: `Türk tarihini öğrenmeye yeni başlamış biri için detaylı bir eğitim modül oluştur. Bu modülü, kısa sayfalara ayır kart yapmak için.`
 };
 
 // Modül üretme fonksiyonu
@@ -56,9 +26,10 @@ const generateModule = async (req, res) => {
 
   try {
     const result = await model.generateContent(prompt);
-    console.log("Generated Content:", result.response.text());
+    const deneme = { content: result.response.text() }
+    console.log(deneme.content)   
 
-    res.json({ content: result.response.text() });
+    res.json({content: result.response.text()});
   } catch (error) {
     console.error('Error generating module:', error.message);
     res.status(500).json({ error: 'Failed to generate module' });

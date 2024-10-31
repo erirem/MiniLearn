@@ -1,17 +1,35 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
 
+const schema = {
+  "type": "array",
+  "items": { // "modules" yerine "items" kullanıyoruz
+    "type": "object",
+    "properties": {
+      "title": {"type": "string"},
+      "content": {"type": "string"}
+    },
+    "required": ["title", "content"] 
+  }
+};
+
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-pro",
+  generationConfig: {
+    responseMimeType: "application/json",
+    responseSchema: schema,
+  },
+});
 
 // Farklı modüller için prompt'lar
 const prompts = {
-  ai: `Json formatında Yapay zeka hakkında detaylı bir modül yazın, şunları içeren:
-  * Yapay zekanın tanımı
-  * Yapay zeka türleri (örneğin, makine öğrenmesi, derin öğrenme)
-  * Yapay zeka uygulamaları
-  * Yapay zekanın etik hususları
-  * 5 çoktan seçmeli sorudan oluşan bir test`, 
+  ai: `Yapay zeka hakkında detaylı bir modül oluştur. Bu modülü, kullanıcıların önyüzde kısa kısa okuyarak öğrenebileceği şekilde küçük bölümlere ayır. Her bölümde bir konu başlığı ve en fazla 100 kelimelik bir açıklama olmalı. Aşağıdaki konuları kapsamalı:
+
+Yapay zekanın tanımı
+Yapay zeka türleri (örneğin, makine öğrenmesi, derin öğrenme, doğal dil işleme, bilgisayar görüşü)
+Yapay zeka uygulamaları (örneğin, sağlık, otomotiv, finans, eğitim)
+Yapay zekanın etik hususları (örneğin, işsizlik, önyargı, gizlilik, güvenlik, sorumluluk)`, 
 
   math: `Write a detailed module about calculus, including:
   * A definition of calculus

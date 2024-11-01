@@ -22,15 +22,15 @@ Minilearn, öğrencilerin belirli konulardaki yetkinlik seviyelerini ölçer ve 
 ---
 
 ## 🚀 Teknolojiler
-- **Frontend:** (Kullandığınız frontend teknolojilerini belirtin, örneğin: React, Flutter, vs.)
-- **Backend:** (API'ler ve backend yapısı hakkında bilgi verin, örneğin: Node.js, Python, vs.)
-- **Veritabanı:** (Veritabanı sistemi, örneğin: PostgreSQL, MongoDB, vs.)
-- **Yapay Zeka:** (Şu anda hangi AI teknolojilerini kullandığınızı belirtin.)
+- **Frontend:** (Kullandığınız frontend teknolojilerini belirtin, örneğin: React, Flutter, vs.) EKLENECEK
+- **Backend:** (API'ler ve backend yapısı hakkında bilgi verin, örneğin: Node.js, Python, vs.)EKLENECEK
+- **Veritabanı:** (Veritabanı sistemi, örneğin: PostgreSQL, MongoDB, vs.)EKLENECEK
+- **Yapay Zeka:** (Şu anda hangi AI teknolojilerini kullandığınızı belirtin.)EKLENECEK
 
 ---
 
 ## 📚 Kullanım Kılavuzu
-
+EKLENECEK
 ### Kurulum
 1. Depoyu klonlayın:
    ```bash

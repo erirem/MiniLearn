@@ -34,4 +34,4 @@ EKLENECEK
 ### Kurulum
 1. Depoyu klonlayın:
    ```bash
-   git clone https://github.com/kullanici-adi/minilearn.git
+   git clone https://github.com/erirem/minilearn.git

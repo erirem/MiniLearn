@@ -7,29 +7,47 @@ const ModulesList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [title, setTitle] = useState('')
 
-  const splitContent = (text) => {
-    const cardRegex = /\*\*Kart \d+: (.*?)\*\*\n(.*?)(?=\*\*Kart \d+:|\n$)/gs;
-    const cards = [];
-    let match;
-    while ((match = cardRegex.exec(text)) !== null) {
-      cards.push({
-        title: match[1].trim(),
-        description: match[2].trim(),
+  const splitContent = (content) => {
+    try {
+      // If content is passed as a string, parse it
+      const data = typeof content === 'string' ? JSON.parse(content) : content;
+      
+      // Extract the main content sections
+      const pages = data.sections.map(section => ({
+        id: section.id,
+        title: section.title,
+        description: section.content,
+        keyPoints: section.keyPoints
+      }));
+  
+      // Add the main title and description as the first page
+      pages.unshift({
+        id: 0,
+        title: data.title,
+        description: data.description,
+        keyPoints: [] // Empty array since the main content doesn't have key points
       });
+  
+      return pages;
+    } catch (error) {
+      console.error('Error processing content:', error);
+      return [];
     }
-    return cards;
   };
 
   const generateModule = async (moduleType) => {
     setLoading(true);
     setError(null);
     setCurrentPage(0);
+    setContent([])
 
     try {
       const response = await axios.post('http://localhost:5000/api/modules', {
         moduleType,
       });
+      setTitle(moduleType);
       const cards = splitContent(response.data.content);
       setContent(cards);
     } catch (err) {
@@ -54,16 +72,16 @@ const ModulesList = () => {
 
   return (
     <div className="module-container">
-      <h2 className="module-title">Select a Module</h2>
+      <h2 className="module-title">Modül Seç</h2>
       <div className="button-group">
-        <button className="module-button" onClick={() => generateModule('ai')}>
-          Artificial Intelligence
+        <button className="module-button" onClick={() => generateModule('Yapay Zeka')}>
+          Yapay Zeka
         </button>
-        <button className="module-button" onClick={() => generateModule('math')}>
-          Mathematics
+        <button className="module-button" onClick={() => generateModule('Matematik')}>
+          Matematik
         </button>
-        <button className="module-button" onClick={() => generateModule('history')}>
-          History
+        <button className="module-button" onClick={() => generateModule('Tarih')}>
+          Tarih
         </button>
       </div>
 
@@ -72,7 +90,7 @@ const ModulesList = () => {
 
       {content.length > 0 && (
         <div className="card-container">
-          <h3 className="card-title">Generated Content (Card {currentPage + 1} of {content.length}):</h3>
+          <h3 className="card-title">{title} (Card {currentPage + 1} of {content.length}):</h3>
           <div className="card">
             <h4>{content[currentPage].title}</h4>
             <p>{content[currentPage].description}</p>

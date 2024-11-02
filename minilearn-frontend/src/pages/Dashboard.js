@@ -2,6 +2,7 @@
 import React from 'react';
 import { auth } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import './Dashboard.css'
 
 // Destructure the backendMessage from props
 function Dashboard({ backendMessage }) {

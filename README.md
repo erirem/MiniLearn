@@ -18,6 +18,8 @@ Minilearn, öğrencilerin belirli konulardaki yetkinlik seviyelerini ölçer ve 
 - **Öğrenme Stili Analizi:** Öğrencinin görsel, işitsel, kinestetik gibi öğrenme türlerine olan yatkınlığını belirlemek.
 - **AI Destekli İçerik Üretimi:** Öğrencinin öğrenme stiline göre yapay zeka kullanarak modüller ve içerikler oluşturmak.
 - **Gelişmiş Öğrenme Takibi:** Öğrencinin genel öğrenme eğilimlerini ve performansını analiz ederek öneriler sunmak.
+- **Chatbot Desteği:** Öğrencilerin modüller hakkında yapay zekaya soru sormasını ve AI tarafından üretilen cevaplar almasını sağlamak.
+- **Hatalı Cevap Geri Bildirimi:** Yapay zeka, yanlış yapılan soruların neden yanlış olduğunu ve doğru cevabın mantığını açıklayan geri bildirimler sunar.
 
 ---
 

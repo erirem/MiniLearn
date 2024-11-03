@@ -28,6 +28,8 @@ const Quiz = () => {
     setCurrentPage(0);
     setContent([]);
     setAnswers([]);
+    setShowScore(false);
+    
     console.log("QUİZ OLUŞTURULUYOR ...")
     try {
       const response = await axios.post('http://localhost:5000/api/quizes', {

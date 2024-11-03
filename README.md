@@ -16,23 +16,22 @@ Minilearn, öğrencilerin belirli konulardaki yetkinlik seviyelerini ölçer ve 
 
 ### Gelecekteki Özellikler (Vizyon)
 - **Öğrenme Stili Analizi:** Öğrencinin görsel, işitsel, kinestetik gibi öğrenme türlerine olan yatkınlığını belirlemek.
-- **AI Destekli İçerik Üretimi:** Öğrencinin öğrenme stiline göre yapay zeka kullanarak modüller ve içerikler oluşturmak.
+- **AI Destekli Özel İçerik Üretimi:** Öğrencinin öğrenme stiline göre yapay zeka kullanarak modüller ve içerikler oluşturmak.
 - **Gelişmiş Öğrenme Takibi:** Öğrencinin genel öğrenme eğilimlerini ve performansını analiz ederek öneriler sunmak.
 - **Chatbot Desteği:** Öğrencilerin modüller hakkında yapay zekaya soru sormasını ve AI tarafından üretilen cevaplar almasını sağlamak.
 - **Hatalı Cevap Geri Bildirimi:** Yapay zeka, yanlış yapılan soruların neden yanlış olduğunu ve doğru cevabın mantığını açıklayan geri bildirimler sunar.
+- **Öğrenme Yolculuğu Haritaları**: Öğrencilere, hedeflerine ulaşmak için adım adım bir yolculuk haritası sunar.
+- **Rozetler ve Günlük Seriler**: Öğrencilerin motivasyonunu artırmak için Duolingo'ya benzer şekilde rozetler ve günlük seriler sunulur.
 
 ---
 
 ## 🚀 Teknolojiler
-- **Frontend:** (Kullandığınız frontend teknolojilerini belirtin, örneğin: React, Flutter, vs.) EKLENECEK
-- **Backend:** (API'ler ve backend yapısı hakkında bilgi verin, örneğin: Node.js, Python, vs.)EKLENECEK
-- **Veritabanı:** (Veritabanı sistemi, örneğin: PostgreSQL, MongoDB, vs.)EKLENECEK
-- **Yapay Zeka:** (Şu anda hangi AI teknolojilerini kullandığınızı belirtin.)EKLENECEK
-
+- **Frontend:** React, React Router, Tailwind CSS
+- **Backend:** Express.js, Firebase Admin SDK (Sunucu tarafında Firebase hizmetlerine erişim için), Axios (API istekleri için), Google Generative AI (gemini modeli ile içerik ve quiz oluşturma için)
+- **Veritabanı:** Firebase Firestore
+- **Yapay Zeka:**  Google Generative AI (Gemini Modeli) - İçerik ve quiz oluşturma için kullanılıyor
 ---
 
-## 📚 Kullanım Kılavuzu
-EKLENECEK
 ### Kurulum
 1. Depoyu klonlayın:
    ```bash

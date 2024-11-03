@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './ModulesList.css'; // Import the custom CSS file
+import { auth } from '../firebaseConfig';
+
+
 
 const ModulesList = () => {
   const [content, setContent] = useState([]);
@@ -8,6 +11,8 @@ const ModulesList = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [title, setTitle] = useState('')
+
+  const userEmail = auth.currentUser?.email;
 
   const splitContent = (content) => {
     try {
@@ -46,9 +51,11 @@ const ModulesList = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/modules', {
         moduleType,
+        userEmail
       });
       setTitle(moduleType);
       const cards = splitContent(response.data.content);
+      console.log(typeof response.data);
       setContent(cards);
     } catch (err) {
       console.error('Error generating module:', err);
@@ -80,7 +87,7 @@ const ModulesList = () => {
         <button className="module-button" onClick={() => generateModule('Matematik')}>
           Matematik
         </button>
-        <button className="module-button" onClick={() => generateModule('Tarih')}>
+        <button className="module-button" onClick={() => generateModule('Türk Tarihi')}>
           Tarih
         </button>
       </div>

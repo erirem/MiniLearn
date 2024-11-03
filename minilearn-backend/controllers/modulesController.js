@@ -1,9 +1,30 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config();
+const { db } = require('../firebaseAdmin');
 
 const genAI = new GoogleGenerativeAI(process.env.API_KEY);
 const model = genAI.getGenerativeModel({
   model: "gemini-1.5-flash"});
+
+  async function fetchDifficulty(userEmail, moduleType) {
+    try {
+      console.log("FETCHING DIFFICULTY...")
+      const userRef = db.collection('userEvaluations').doc(userEmail).collection('quizzes').doc(moduleType);
+      const quizDoc = await userRef.get();
+      
+      if (quizDoc.exists) {
+        console.log("QUIZDOC EXIST AND EXTRACTING DIFFICULTY...")
+        const quizData = quizDoc.data();
+        const analysis = quizData.analysis || 'Başlangıç Seviyesi';
+        return analysis;
+      }
+      console.log("QUIZDOC CAN'T FIND...")
+      return 'başlangıç seviyesi'; // Return default if document does not exist
+    } catch (error) {
+      console.error('Error fetching difficulty from database:', error);
+      return 'başlangıç seviyesi'; // Return default on error
+    }
+  }
 
 // Farklı modüller için prompt'lar
 function createPrompt(konu, zorluk) {
@@ -31,15 +52,18 @@ function createPrompt(konu, zorluk) {
     4. Belirtilen zorluk seviyesine uygun basit bir dil kullan
     5. Her bölüm için 2-3 anahtar nokta ekle
     6. Konuyu düzgün kapsamak için 4-5 bölüm oluştur
+    7. Başına ve sonuna başka tokenlar ekleme
   }`
 }
 
 // Modül üretme fonksiyonu
 const generateModule = async (req, res) => {
   
-  const { moduleType } = req.body; // Modül tipini frontend'den alıyoruz
-
-  const prompt = createPrompt(moduleType, 'Başlangıç seviyesi')// Modül tipine göre prompt seçiyoruz
+  const { moduleType, userEmail } = req.body; // Modül tipini frontend'den alıyoruz
+  console.log("MODULETYPE :" , moduleType, " USEREMAIL : " , userEmail)
+  const zorluk = await fetchDifficulty(userEmail, moduleType);
+  console.log("SEVİYE : ", zorluk)
+  const prompt = createPrompt(moduleType, zorluk)// Modül tipine göre prompt seçiyoruz
 
   if (!prompt) {
     return res.status(400).json({ error: 'Invalid module type.' }); // Geçersiz modül tipi
@@ -47,9 +71,7 @@ const generateModule = async (req, res) => {
 
   try {
     const result = await model.generateContent(prompt);
-    const deneme = { content: result.response.text() }
-    console.log(deneme.content)   
-
+    
     res.json({content: result.response.text()});
   } catch (error) {
     console.error('Error generating module:', error.message);

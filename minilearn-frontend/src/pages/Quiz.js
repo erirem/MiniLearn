@@ -36,6 +36,7 @@ const Quiz = () => {
       });
       setTitle(quizType);
       const questions = splitContent(response.data.content);
+      console.log("KONTROL Quiz : " , response.data.content)
       setContent(questions);
       
     } catch (err) {
@@ -154,7 +155,7 @@ const Quiz = () => {
         <button className="quiz-button" onClick={() => generateQuiz('Matematik')}>
           Matematik
         </button>
-        <button className="quiz-button" onClick={() => generateQuiz('Tarih')}>
+        <button className="quiz-button" onClick={() => generateQuiz('Türk Tarihi')}>
           Tarih
         </button>
       </div>

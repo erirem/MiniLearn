@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Quiz.css'; // Custom CSS for QuizList
 import { auth } from '../firebaseConfig';
@@ -28,10 +28,11 @@ const Quiz = () => {
     setCurrentPage(0);
     setContent([]);
     setAnswers([]);
-
+    console.log("QUİZ OLUŞTURULUYOR ...")
     try {
       const response = await axios.post('http://localhost:5000/api/quizes', {
         quizType,
+        userEmail
       });
       setTitle(quizType);
       const questions = splitContent(response.data.content);
@@ -101,11 +102,7 @@ const Quiz = () => {
       selectedOption,
       correctAnswer: currentQuestion.answer,
     };
-    console.log('studentAnswer:', studentAnswer);
-
     setAnswers((prevAnswers) => [...prevAnswers, studentAnswer]);
-    console.log(answers)
-    
     setSelectedOption(null);
 
     if (currentPage < content.length - 1) {
@@ -114,43 +111,38 @@ const Quiz = () => {
       setIsQuizFinished(true);
     }
   };
- 
-  function calculateScore(answers) {
-    let puan = 0;
-    answers.forEach(answer => {
-      console.log("Selected Option: ", answer.selectedOption, "Correct Answer: ", answer.correctAnswer)
-      if (answer.selectedOption === answer.correctAnswer) {
-        puan += 1; // Increment score for each correct answer
-      }
-      console.log(puan)
-    });
-    setScore(puan);
-  }
+
+  useEffect(() => {
+    if (isQuizFinished) {
+      // Calculate the score when the quiz is finished
+      let puan = 0;
+      answers.forEach(answer => {
+        if (answer.selectedOption === answer.correctAnswer) {
+          puan += 1; // Increment score for each correct answer
+        }
+      });
+      setScore(puan);
+      setShowScore(true);
+
+      // Send answers to the backend
+      sendAnswersToBackend();
+      setIsQuizFinished(false);
+    }
+  }, [isQuizFinished, answers]); // Add answers to the dependency array to ensure score calculation is correct
 
   const sendAnswersToBackend = async () => {
     try {
       const response = await axios.post('http://localhost:5000/api/evaluate', {
         answers,
-        quizType: title, // Hangi quiz türünün çözüldüğünü de ekleyebilirsin
-        score,
+        quizType: title,
         userEmail,
         userName
       });
-      
-      // Backend'den dönen yorumları burada işleyebilirsin
       console.log('Model Output:', response.data);
     } catch (error) {
       console.error('Error sending answers to the backend:', error);
     }
   };
-  
-  // Quiz tamamlandığında bu fonksiyonu çağır
-  if (isQuizFinished) {
-    calculateScore(answers);
-    setShowScore(true);
-    sendAnswersToBackend();
-    setIsQuizFinished(false);
-  }
 
   return (
     <div className="quiz-container">

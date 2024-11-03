@@ -32,8 +32,6 @@ Minilearn, öğrencilerin belirli konulardaki yetkinlik seviyelerini ölçer ve 
 - **Yapay Zeka:**  Google Generative AI (Gemini Modeli) - İçerik ve quiz oluşturma için kullanılıyor
 ---
 
-## 📚 Kullanım Kılavuzu
-EKLENECEK
 ### Kurulum
 1. Depoyu klonlayın:
    ```bash
